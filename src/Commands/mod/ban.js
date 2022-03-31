@@ -4,54 +4,56 @@ import { MessageEmbed, Permissions } from 'discord.js'
 module.exports = class extends Command {
   constructor() {
     super()
-    this.name = 'ban'
-    this.description = "mbpr project's ban"
+    this.name = '차단'
+    this.description = 'Doremi의 차단 명령어입니다.'
     this.options = [
       {
         type: 'USER',
-        name: 'member',
-        description: 'member',
+        name: '멤버',
+        description: '멤버',
         required: true,
       },
       {
         type: 'STRING',
-        name: 'reason',
-        description: 'ban reason',
+        name: '사유',
+        description: '차단 사유',
         required: false,
       },
     ]
   }
   execute(interaction) {
-    let member = interaction.options.getMember('member')
+    let member = interaction.options.getMember('멤버')
     if (interaction.channel.type === 'DM')
       return interaction.reply({
-        content: "Can't Using the DM.",
+        content: '해당 명령어는 DM에서 사용하실 수 없어요 :<',
         ephemeral: true,
       })
     if (
       !interaction.guild.members.cache
         .get(interaction.user.id)
-        .permissions.has(Permissions.FLAGS.KICK_MEMBERS)
+        .permissions.has(Permissions.FLAGS.BAN_MEMBERS)
     )
       return interaction.reply({
-        content: 'You not have permissions has `Ban Members`.',
+        content:
+          '당신에게 `멤버 차단하기` 권한이 없어서 명령어를 실행할 수 없어요 :<',
         ephemeral: true,
       })
-    if (!interaction.guild.me.permissions.has(Permissions.FLAGS.KICK_MEMBERS))
+    if (!interaction.guild.me.permissions.has(Permissions.FLAGS.BAN_MEMBERS))
       return interaction.reply({
-        content: "i'm not have permissions has `Ban Members`.",
+        content:
+          '저에게 `멤버 차단하기` 권한이 없어서 해당 명령어를 실행할 수 없어요 :<',
         ephemeral: true,
       })
 
     try {
       member.ban({
-        reason: interaction.options.getString('reason') || 'None',
+        reason: interaction.options.getString('사유') || 'None',
       })
       interaction.reply({
         embeds: [
           new MessageEmbed()
-            .setTitle('Ban')
-            .setDescription(`Member ${member.user.tag} has been baned.`)
+            .setTitle('차단')
+            .setDescription(`멤버 ${member.user.tag}를 차단했어요.`)
             .setTimestamp(),
         ],
         ephemeral: true,

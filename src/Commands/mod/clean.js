@@ -4,13 +4,13 @@ import { Command } from '../../Client'
 module.exports = class extends Command {
   constructor() {
     super()
-    this.name = 'clean'
-    this.description = 'Clean the chat room.'
+    this.name = '청소'
+    this.description = 'Doremi의 청소 명령어입니다.'
     this.options = [
       {
         type: 'NUMBER',
-        name: 'limit',
-        description: 'limit',
+        name: '갯수',
+        description: '갯수',
         required: true,
         minValue: 1,
         maxValue: 100,
@@ -21,7 +21,7 @@ module.exports = class extends Command {
   execute(interaction) {
     if (interaction.channel.type === 'DM')
       return interaction.reply({
-        content: "Can't Using the DM.",
+        content: '해당 명령어는 DM에서 사용하실 수 없어요 :<',
         ephemeral: true,
       })
     if (
@@ -32,7 +32,8 @@ module.exports = class extends Command {
         )
     )
       return interaction.reply({
-        content: 'You not have permissions has `Manage Messages`.',
+        content:
+          '당신에게 `메세지 관리하기` 권한이 없어서 명령어를 실행할 수 없어요 :<',
         ephemeral: true,
       })
     if (
@@ -41,12 +42,13 @@ module.exports = class extends Command {
       )
     )
       return interaction.reply({
-        content: "i'm not have permissions gas `Manage Messages`.",
+        content:
+          '저에게 `메세지 관리하기` 권한이 없어서 해당 명령어를 실행할 수 없어요 :<',
         ephemeral: true,
       })
     interaction.channel?.messages
       .fetch({
-        limit: interaction.options.getNumber('limit'),
+        limit: interaction.options.getNumber('갯수'),
       })
       .then(messages => {
         interaction.guild?.channels.fetch(interaction.channelId).then(a => {
@@ -54,13 +56,14 @@ module.exports = class extends Command {
           interaction.reply({
             embeds: [
               new MessageEmbed()
-                .setTitle('clean')
+                .setTitle('청소')
                 .setDescription(
                   `${interaction.options.getNumber(
                     'limit'
-                  )} chat(s) have been deleted.`
+                  )} 개의 채팅이 삭제되었습니다.`
                 ),
             ],
+            ephemeral: true,
           })
         })
       })
