@@ -35,10 +35,12 @@ module.exports = class extends Command {
     )
       return interaction.reply({
         content: 'You not have permissions has `Ban Members`.',
+        ephemeral: true,
       })
     if (!interaction.guild.me.permissions.has(Permissions.FLAGS.KICK_MEMBERS))
       return interaction.reply({
         content: "i'm not have permissions has `Ban Members`.",
+        ephemeral: true,
       })
 
     try {
@@ -52,6 +54,7 @@ module.exports = class extends Command {
             .setDescription(`Member ${member.user.tag} has been baned.`)
             .setTimestamp(),
         ],
+        ephemeral: true,
       })
     } catch (error) {
       console.log(error)
