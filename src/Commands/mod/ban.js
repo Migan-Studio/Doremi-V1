@@ -45,6 +45,12 @@ module.exports = class extends Command {
         ephemeral: true,
       })
 
+    if (!member.bannable)
+      return interaction.reply({
+        content: '해당 멤버가 없거나 차단할 수가 없어요 :<',
+        ephemeral: true,
+      })
+
     try {
       member.ban({
         reason: interaction.options.getString('사유') || 'None',
