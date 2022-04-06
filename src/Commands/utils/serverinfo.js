@@ -5,7 +5,7 @@ module.exports = class extends Command {
   constructor() {
     super()
     this.name = '서버정보'
-    this.description = 'Doremi의 서버정보'
+    this.description = 'Doremi의 서버정보명령어입니다.'
   }
   execute(interaction) {
     function returnServerSecurity() {

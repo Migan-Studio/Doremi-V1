@@ -66,6 +66,7 @@ export class mbprClient extends Client {
   start() {
     config()
     let SupportContent
+    let id
     this.login(process.env.TOKEN)
     this.on('ready', () => {
       console.log(`[Client] ${this.user.username}`)
@@ -118,11 +119,17 @@ export class mbprClient extends Client {
       if (interaction.isCommand()) {
         const Command = this._commands.get(interaction.commandName)
 
+        id = interaction.user.id
+
         if (!Command) return
 
         Command.execute(interaction)
       } else if (interaction.isSelectMenu()) {
-        SelectMenus[interaction.values[0]].execute(interaction, SupportContent)
+        if (interaction.customId.startsWith('Doremi-select$support')) {
+          SelectMenus[interaction.customId].execute(interaction, SupportContent)
+        } else {
+          SelectMenus[interaction.customId].execute(interaction, id)
+        }
       }
     })
   }
