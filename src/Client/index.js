@@ -26,7 +26,13 @@ export class Command {
 export class mbprClient extends Client {
   constructor() {
     super({
-      intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.DIRECT_MESSAGES],
+      intents: [
+        Intents.FLAGS.GUILDS,
+        Intents.FLAGS.DIRECT_MESSAGES,
+        Intents.FLAGS.GUILD_MESSAGES,
+        Intents.FLAGS.GUILD_PRESENCES,
+        Intents.FLAGS.GUILD_MEMBERS,
+      ],
       partials: ['CHANNEL'],
     })
     this._commands = new Collection()
@@ -69,51 +75,55 @@ export class mbprClient extends Client {
     let id
     this.login(process.env.TOKEN)
     this.on('ready', () => {
-      console.log(`[Client] ${this.user.username}`)
+      console.log(`[Client] Bot Name ${this.user.username}`)
+      console.log(`[Client] Version ${require('../../package.json').version}`)
       console.log('-------------------------')
+      this.user.setActivity({ name: '/도움말', type: 'LISTENING' })
     })
     process.on('uncaughtException', console.error)
     this._loadCommands()
     this.on('messageCreate', msg => {
-      if (msg.author.bot || msg.channel.type !== 'DM') return
-      SupportContent = msg.content
-      msg.reply({
-        embeds: [
-          new MessageEmbed()
-            .setAuthor({
-              name: msg.author.tag,
-              iconURL: msg.author.displayAvatarURL(),
-            })
-            .setTitle('지원')
-            .setDescription('어느 항목으로 지원을 하실껀까요?'),
-        ],
-        components: [
-          new MessageActionRow().addComponents(
-            new MessageSelectMenu()
-              .setCustomId('Doremi-select$support')
-              .setOptions(
-                {
-                  label: '버그',
-                  description:
-                    'Doremi를 사용하면서 발생한 버그에 대해 문의하실 수 있어요.',
-                  value: 'Doremi-support$bug',
-                },
-                {
-                  label: '건의',
-                  description:
-                    'Doremi를 사용하면서 불편했던 점이나 추가 되면 좋을 꺼 같은 기능을 문의하실 수 있어요.',
-                  value: 'Doremi-support$suggestion',
-                },
-                {
-                  label: '기타',
-                  description:
-                    'Doremi를 사용하면서 궁금 했던 점을 문의하실 수 있어요.',
-                  value: 'Doremi-support$other',
-                }
-              )
-          ),
-        ],
-      })
+      if (msg.author.bot) return
+      if (msg.channel.type === 'DM') {
+        SupportContent = msg.content
+        msg.reply({
+          embeds: [
+            new MessageEmbed()
+              .setAuthor({
+                name: msg.author.tag,
+                iconURL: msg.author.displayAvatarURL(),
+              })
+              .setTitle('지원')
+              .setDescription('어느 항목으로 지원을 하실껀까요?'),
+          ],
+          components: [
+            new MessageActionRow().addComponents(
+              new MessageSelectMenu()
+                .setCustomId('Doremi-select$support')
+                .setOptions(
+                  {
+                    label: '버그',
+                    description:
+                      'Doremi를 사용하면서 발생한 버그에 대해 문의하실 수 있어요.',
+                    value: 'Doremi-support$bug',
+                  },
+                  {
+                    label: '건의',
+                    description:
+                      'Doremi를 사용하면서 불편했던 점이나 추가 되면 좋을 꺼 같은 기능을 문의하실 수 있어요.',
+                    value: 'Doremi-support$suggestion',
+                  },
+                  {
+                    label: '기타',
+                    description:
+                      'Doremi를 사용하면서 궁금 했던 점을 문의하실 수 있어요.',
+                    value: 'Doremi-support$other',
+                  }
+                )
+            ),
+          ],
+        })
+      }
     })
     this.on('interactionCreate', interaction => {
       if (interaction.isCommand()) {

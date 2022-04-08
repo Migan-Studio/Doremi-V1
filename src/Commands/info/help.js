@@ -14,17 +14,21 @@ module.exports = class extends Command {
         new MessageEmbed()
           .setTitle(`${interaction.client.user.username} 도움말`)
           .setDescription(
-            Formatters.codeBlock(
+            `**참고. 이 봇은 [mbpr](https://github.com/Migan-Studio/mbpr)프로젝트를 기반하여 만들어 졌습니다.**
+            ${Formatters.codeBlock(
               'md',
               `# 정보
 - 도움말
 
 # mod
 - 추방
-- 밴
-- 청소`
-            )
-          ),
+- 차단
+- 청소
+-차단해제`
+
+            )}`
+          )
+          .setThumbnail(interaction.user.displayAvatarURL()),
       ],
     })
   }

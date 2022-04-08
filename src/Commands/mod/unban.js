@@ -5,7 +5,7 @@ module.exports = class extends Command {
   constructor() {
     super()
     this.name = '차단해제'
-    this.description = 'Doremi의 차단해제명령어입니다'
+    this.description = '[멤버 차단하기 권한 필요] Doremi의 차단해제 명령어입니다'
     this.options = [
       {
         type: 'STRING',
