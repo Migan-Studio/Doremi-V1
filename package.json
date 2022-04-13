@@ -18,6 +18,7 @@
   "scripts": {
     "start": "node dist",
     "compile": "babel src -d dist",
-    "dev": "babel-node src"
+    "dev": "babel-node src",
+    "start:heroku": "babel src -d dist && node dist"
   }
 }
