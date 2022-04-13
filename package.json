@@ -19,6 +19,6 @@
     "start": "node dist",
     "compile": "babel src -d dist",
     "dev": "babel-node src",
-    "start:heroku": "babel src -d dist && node dist"
+    "start:heroku": "./node_modules/.bin/babel src -d dist && node dist"
   }
 }
