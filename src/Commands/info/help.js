@@ -19,12 +19,17 @@ module.exports = class extends Command {
               'md',
               `# 정보
 - 도움말
+- 정보
+- 핑
 
 # mod
 - 추방
 - 차단
 - 청소
--차단해제`
+- 차단해제
+
+# 유틸리티
+서버정보`
 
             )}`
           )
