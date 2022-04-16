@@ -93,7 +93,6 @@ export class mbprClient extends Client {
         KRBots.mybot
           .update({
             servers: this.guilds.cache.size,
-            shards: this.shard.count,
           })
           .then(res =>
             console.log(
@@ -105,7 +104,6 @@ export class mbprClient extends Client {
           KRBots.mybot
             .update({
               servers: this.guilds.cache.size,
-              shards: this.shard.count,
             })
             .then(res =>
               console.log(
