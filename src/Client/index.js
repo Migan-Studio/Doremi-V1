@@ -10,6 +10,7 @@ import { readdirSync } from 'fs'
 import path from 'path'
 import { config } from 'dotenv'
 import SelectMenus from './Interactions/SelectMenus'
+import { Koreanbots, KoreanbotsClient } from 'koreanbots'
 
 export class Command {
   constructor() {
@@ -23,7 +24,7 @@ export class Command {
   execute(interaction) {}
 }
 
-export class mbprClient extends Client {
+export class mbprClient extends KoreanbotsClient {
   constructor() {
     super({
       intents: [
@@ -34,6 +35,11 @@ export class mbprClient extends Client {
         Intents.FLAGS.GUILD_MEMBERS,
       ],
       partials: ['CHANNEL'],
+      koreanbots: {
+        api: {
+          token: process.env.KRBOTS_TOKEN,
+        },
+      },
     })
     this._commands = new Collection()
     this._commandDirectory = path.join(__dirname, '..', 'Commands')
