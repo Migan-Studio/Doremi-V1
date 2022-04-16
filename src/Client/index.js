@@ -10,6 +10,7 @@ import { readdirSync } from 'fs'
 import path from 'path'
 import { config } from 'dotenv'
 import SelectMenus from './Interactions/SelectMenus'
+import { Koreanbots } from 'koreanbots'
 
 export class Command {
   constructor() {
@@ -79,7 +80,42 @@ export class mbprClient extends Client {
       console.log(`[Client] Version ${require('../../package.json').version}`)
       console.log('-------------------------')
       this.user.setActivity({ name: '/도움말', type: 'LISTENING' })
+      if (!process.env.KRBOTS_TOKEN) {
+        console.error('Koreanbots TOKEN is Null')
+      } else {
+        const KRBots = new Koreanbots({
+          api: {
+            token: process.env.KRBOTS_TOKEN,
+          },
+          clientID: this.user.id,
+        })
+
+        KRBots.mybot
+          .update({
+            servers: this.guilds.cache.size,
+            shards: this.shard.count,
+          })
+          .then(res =>
+            console.log(
+              `서버 수 업데이트 완료\n 반환된 정보: ${JSON.stringify(res)}`
+            )
+          )
+          .catch(console.error)
+        setInterval(() =>
+          KRBots.mybot
+            .update({
+              servers: this.guilds.cache.size,
+              shards: this.shard.count,
+            })
+            .then(res =>
+              console.log(
+                `서버 수 업데이트 완료\n 반환된 정보: ${JSON.stringify(res)}`
+              )
+            ).catch(console.error)
+        )
+      }
     })
+
     process.on('uncaughtException', console.error)
     this._loadCommands()
     this.on('messageCreate', msg => {
