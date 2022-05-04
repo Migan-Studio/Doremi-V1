@@ -10,7 +10,7 @@ import { readdirSync } from 'fs'
 import path from 'path'
 import { config } from 'dotenv'
 import SelectMenus from './Interactions/SelectMenus'
-import { Koreanbots, KoreanbotsClient } from 'koreanbots'
+import { KoreanbotsClient } from 'koreanbots'
 
 export class Command {
   constructor() {
@@ -84,7 +84,8 @@ export class mbprClient extends KoreanbotsClient {
       console.log(`[Client] Bot Name ${this.user.username}`)
       console.log(`[Client] Version ${require('../../package.json').version}`)
       console.log('-------------------------')
-      this.user.setActivity({ name: '/도움말', type: 'LISTENING' })
+      const changeStatus = () => this.user.setActivity({ name: '/도움말', type: 'LISTENING' })
+      setInterval(changeStatus, 10000)
     })
 
     process.on('uncaughtException', console.error)
